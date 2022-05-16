@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Accueil
+{% endblock %}
+{% block body %}
+Contenu accueil
+
+
+
+    {{ form_start(formRecherche) }}
+       <div class="row">
+           <div class="col-4">
+               {{ form_row(formRecherche.nom) }}
+           </div>
+           <div class="col-4">
+               {{ form_row(formRecherche.realisateur) }}
+           </div>
+           <div class="col-4">
+               {{ form_row(formRecherche.acteur) }}
+           </div>
+       </div>
+        <div class="row">
+            <div class="col-4">
+                {{ form_row(formRecherche.genre) }}
+            </div>
+            <div class="col-4">
+                {{ form_row(formRecherche.pays) }}
+            </div>
+            <div class="col-4">
+                {{ form_row(formRecherche.annee) }}
+            </div>
+        </div>
+    {{ form_end(formRecherche) }}
+
+
+    <h1>
+        Films trouvés
+    </h1>
+    {% for filmAct in lesFilms %}
+        <h3>
+            {# crée un lien avec un chemin pour afficher les details du film
+                    Techniquement:
+                        la fonction path génère la route à partir du route name ( voir #Route au dessus du ctrl )
+                        Comme la route prend un param filmId, il faut générer egalement la valeur de ce param; d'ou la notation spécifique; les params de path se passent avec un objet twig donc entre {cle: valeur}
+            #}
+            <a href="{{ path("film-detail",{filmId: filmAct.id}) }}">{{ filmAct.nom }}</a>
+        </h3>
+        <img src="{{ asset("IMAGES-FILMS/") }}{{ filmAct.image }}">
+        <h4>sortie en: {{ filmAct.anneeSortie }}</h4>
+        <h4>durée: {{ filmAct.duree }} minutes.</h4>
+        <h4>Pays: {{ filmAct.pays.nom }}</h4>
+        {% for genreAct in filmAct.genres %}
+            <h5>genre: {{ genreAct.style }}</h5>
+        {% endfor %}
+    {% endfor %}
+
+{% endblock %}

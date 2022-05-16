@@ -1,0 +1,3 @@
+Recherche par film / cat / multicritère doit renvoyer vers vue du multicritère
+Mmulti: Créer le querybuilder en fonction crit
+Login / Register / LOGOUT/ INSCRIPTION

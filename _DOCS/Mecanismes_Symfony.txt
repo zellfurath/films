@@ -1,0 +1,38 @@
+Model Vue Controleur:
+----------------------
+
+VUE                 Vue se compose avec TWIG un moteur de templates pour php permetant le rattachement au CSS, HTML et JS.
+---------------------------
+CONTROLEUR    des classes avec des fonctions au-dessus desquelles 1 route
+----------------------------
+MODELE              Repository          <--- échange des entités avec --->  BDD
+
+Classes :
+------------
+Une calsse est un type de donnée de haut niveau (int et string sont des types de données simples (de bas niveau ) )
+elle contient :
+- variables $nomdevariable
+-fonctions : public function nomdefonction ( et paramettres entre parenthèses )
+
+
+
+Controller :
+-------------
+Contient des fonctions.
+au dessus de chaque fonctions on place un #[Route dans le-quel on indique l' URL qui déclenche la fonction.
+
+Entity :
+----------
+C'est un objet qui correspond à une ligne d'une table en BDD.
+
+Repositorys :
+----------------
+(repository) Est contenu avec les Entity et la base donnée dans Model.
+C'est une classe qui contient des fonctions exécutant des requettes en base de donnée.
+Ces fonctions renvoient des entités oû des tableaux d'entités.
+find(id) : Entity       prend un ID et renvoit l' entité correspondante contenant les données provenant de la base de données.
+findAll() : []  Entity          Renvoi un tableau d'entités correspondant à toutes les lignes de la table.
+findByTitre('dracula')           Renvoie un tableau d'entités dont le champ "titre" est "dracula".
+findOneByTitre('dracula')           Renvoi l'entité dont le champ "titre" EST "dracula".
+add(une entité)     insert une nouvelle ligne en base de donnée dans la table correspondant à l'entité passée en parametres
+
