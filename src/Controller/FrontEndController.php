@@ -24,8 +24,8 @@ class FrontEndController extends AbstractController
         ]);
     }
 
-    #[Route('/')]
-    public function accueil(GenreRepository $genreRepository, PaysRepository $paysRepository, Request $request, FilmRepository $filmRepository)
+    #[Route('/',name: 'accueil')]
+    public function accueil(FilmRepository $filmRepository, Request $request)
     {
 
         # Gestion formulaire et DTO recherche multicriteres
@@ -40,42 +40,12 @@ class FrontEndController extends AbstractController
         if ($form->isSubmitted()) {
             # on a fait un submit
 
-            if ($dto->getNom() != null) {
-                $qb->andWhere('f.nom LIKE :NOM')
-                    ->setParameter('NOM', '%' . $dto->getNom() . '%');
-            }
-
-            if ($dto->getActeur() != null) {
-                $qb->join('f.acteurs', 'a')
-                    ->andWhere('a=:ACTEUR')
-                    ->setParameter('ACTEUR', $dto->getActeur());
-            }
-
-            if ($dto->getPays() != null) {
-                $qb->join('f.pays', 'p')
-                    ->andWhere('p=:PAYS')
-                    ->setParameter('PAYS', $dto->getPays());
-            }
-
-            if ($dto->getAnnee() != null) {
-                $qb->andWhere('f.anneeSortie = :ANNEE')
-                    ->setParameter('ANNEE', $dto->getAnnee());
-            }
-
-            if ($dto->getGenre() != null) {
-                $qb->join('f.genres', 'g')
-                    ->andWhere('g=:GENRE')
-                    ->setParameter('GENRE', $dto->getGenre());
-            }
-
-            if ($dto->getRealisateur() != null) {
-                $qb->join('f.realisateurs', 'r')
-                    ->andWhere('r=:REALISATEUR')
-                    ->setParameter('REALISATEUR', $dto->getRealisateur());
-            }
+            $films = $filmRepository->filtreMulticriteres($dto->getNom(),$dto->getAnnee(),$dto->getActeur(), $dto->getRealisateur(),$dto->getGenre(),$dto->getPays());
+        }else{
+            $qb = $filmRepository->createQueryBuilder('f')
+                ->orderBy('f.nom', 'asc');
+            $films = $qb->getQuery()->getResult();
         }
-
-        $films = $qb->getQuery()->getResult();
 
         return $this->renderForm("/front/accueil.html.twig", [
             'lesFilms'=>$films,
